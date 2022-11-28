@@ -16,7 +16,7 @@ def index_view():
         if not short:
             short = create_short_url()
         if URLMap.query.filter_by(short=short).first():
-            flash('Такая короткая ссылка уже есть!')
+            flash('Такая короткая ссылка уже есть')
             return render_template('index.html', form=form)
         url = URLMap(
             original=form.original.data,
@@ -37,5 +37,5 @@ def index_view():
 
 @app.route('/<string:short>')
 def redirect_short(short):
-    original = URLMap.query.filter_by(short=short).first_or_404()
-    return redirect(original.original)
+    original_url = URLMap.query.filter_by(short=short).first_or_404()
+    return redirect(original_url.original)
