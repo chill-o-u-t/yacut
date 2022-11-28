@@ -1,6 +1,6 @@
 import re
-from http import HTTPStatus
 
+from http import HTTPStatus
 from flask import jsonify, request
 
 from settings import REGEX_PATTERN
@@ -15,8 +15,7 @@ def add_link():
     data = request.get_json()
     if not data:
         raise APIError('Отсутствует тело запроса')
-    original = data.get('url')
-    if not original:
+    if not data.get('url'):
         raise APIError('Отсутствует оригинальная ссылка')
     short = data.get('short_link')
     if short:
@@ -29,7 +28,7 @@ def add_link():
     else:
         short = create_short_url()
     url = URLMap(
-        original=original,
+        original=data.get('url'),
         short=short
     )
     db.session.add(url)
@@ -43,5 +42,3 @@ def get_original_url(short):
     if not original:
         raise APIError('Неизвестная короткая ссылка')
     return jsonify({'url': original.original}, HTTPStatus.OK)
-
-
