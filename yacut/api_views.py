@@ -36,7 +36,7 @@ def add_link():
     return jsonify(url.to_dict(), HTTPStatus.CREATED)
 
 
-@app.route('api/id/<string:short>/', methods=['GET'])
+@app.route('/api/id/<string:short>/', methods=['GET'])
 def get_original_url(short):
     original = URLMap.query.filter_by(short=short).first()
     if not original:
