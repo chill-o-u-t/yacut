@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import flash, redirect, render_template
+from flask import flash, redirect, render_template, abort
 
 from . import app, db
 from .forms import UrlForm
@@ -13,10 +13,11 @@ def index_view():
     form = UrlForm()
     if form.validate_on_submit():
         short = form.short.data
+        if URLMap.query.filter_by(short=short).first():
+            flash(f'Имя {short} уже занято!')
+            return render_template('index.html', form=form)
         if not short:
             short = create_short_url()
-        if URLMap.query.filter_by(short=short).first():
-            return render_template('index.html', form=form)
         url = URLMap(
             original=form.original.data,
             short=form.short.data
@@ -37,4 +38,6 @@ def index_view():
 @app.route('/<string:short>')
 def redirect_view(short):
     original_url = URLMap.query.filter_by(short=short).first_or_404()
+    if original_url is None:
+        abort(HTTPStatus.NOT_FOUND)
     return redirect(original_url.original)

@@ -22,6 +22,7 @@ def test_create_id(client):
     }, 'При создании короткой ссылки тело ответа API отличается от ожидаемого.'
 
 
+# +
 def test_create_empty_body(client):
     try:
         got = client.post('/api/id/')

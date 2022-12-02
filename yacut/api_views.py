@@ -16,14 +16,14 @@ def add_link():
     if not data:
         raise APIError('Отсутствует тело запроса')
     if not data.get('url'):
-        raise APIError('Отсутствует оригинальная ссылка')
-    short = data.get('short_link')
+        raise APIError('"url" является обязательным полем!')
+    short = data.get('custom_id')
     if short:
-        if len(short) > 6 or not re.match(REGEX_PATTERN, short):
-            raise APIError('Недопустимая длина ссылки')
+        if len(short) > 16 or not re.match(REGEX_PATTERN, short):
+            raise APIError('Указано недопустимое имя для короткой ссылки')
         if URLMap.query.filter_by(short=short).first():
             raise APIError(
-                'Которткая ссылка {link} уже занята'.format(link=short)
+                'Имя "{link}" уже занято.'.format(link=short)
             )
     else:
         short = create_short_url()
@@ -33,12 +33,12 @@ def add_link():
     )
     db.session.add(url)
     db.session.commit()
-    return jsonify(url.to_dict(), HTTPStatus.CREATED)
+    return jsonify(url.to_dict()), HTTPStatus.CREATED
 
 
 @app.route('/api/id/<string:short>/', methods=['GET'])
 def get_original_url(short):
     original = URLMap.query.filter_by(short=short).first()
     if not original:
-        raise APIError('Неизвестная короткая ссылка')
-    return jsonify({'url': original.original}, HTTPStatus.OK)
+        raise APIError('Указанный id не найден', HTTPStatus.NOT_FOUND)
+    return jsonify({'url': original.original}), HTTPStatus.OK
