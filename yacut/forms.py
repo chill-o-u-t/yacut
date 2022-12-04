@@ -7,17 +7,20 @@ from settings import REGEX_PATTERN
 
 class UrlForm(FlaskForm):
     original_link = URLField(
-        'Введите оригинальную ссылку',
-        validators=[
-            DataRequired(message='Обязательное поле'),
-            URL()
-        ]
+        'Длинная ссылка',
+        validators=[DataRequired(message='Обязательное поле'), URL(message='Введите ссылку целиком')]
     )
     custom_id = StringField(
         'Ваш вариант короткой ссылки',
         validators=[
-            Length(6, 16),
-            Regexp(REGEX_PATTERN),
+            Length(
+                max=16,
+                message=f'Длина ссылки должна быть до {16} символов'
+            ),
+            Regexp(
+                REGEX_PATTERN,
+                message='Можно использовать только латинские буквы и арабские цифры'
+            ),
             Optional()
         ]
     )
