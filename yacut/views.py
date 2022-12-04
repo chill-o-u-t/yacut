@@ -14,7 +14,7 @@ def index_view():
     if form.validate_on_submit():
         short = form.custom_id.data
         if URLMap.query.filter_by(short=short).first():
-            flash(f'Имя {short} уже занято!', 'error-message')
+            flash(f'Имя {short} уже занято!')
             return render_template('index.html', form=form)
         if not short:
             short = create_short_url()
