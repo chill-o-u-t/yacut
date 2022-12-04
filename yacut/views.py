@@ -12,15 +12,15 @@ from .utils import create_short_url
 def index_view():
     form = UrlForm()
     if form.validate_on_submit():
-        short = form.short.data
+        short = form.custom_id.data
         if not short:
             short = create_short_url()
         if URLMap.query.filter_by(short=short).first():
             flash(f'Имя {short} уже занято!', 'error-message')
             return render_template('index.html', form=form)
         url = URLMap(
-            original=form.original.data,
-            short=form.short.data
+            original=form.original_link.data,
+            short=short
         )
         db.session.add(url)
         db.session.commit()
