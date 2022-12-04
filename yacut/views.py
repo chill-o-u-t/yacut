@@ -13,11 +13,11 @@ def index_view():
     form = UrlForm()
     if form.validate_on_submit():
         short = form.custom_id.data
-        if not short:
-            short = create_short_url()
         if URLMap.query.filter_by(short=short).first():
             flash(f'Имя {short} уже занято!', 'error-message')
             return render_template('index.html', form=form)
+        if not short:
+            short = create_short_url()
         url = URLMap(
             original=form.original_link.data,
             short=short

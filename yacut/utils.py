@@ -13,4 +13,3 @@ def create_short_url():
     if URLMap.query.filter_by(short=short_url).first():
         return create_short_url()
     return short_url
-
