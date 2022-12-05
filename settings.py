@@ -21,3 +21,4 @@ MAX_LOOP_COUNT = 16
 EMPTY_BODY = 'Отсутствует тело запроса'
 EMPTY_ORIGINAL_LINK = '"url" является обязательным полем!'
 WRONG_SHORT_LINK = 'Указано недопустимое имя для короткой ссылки'
+LINK_IS_IN_DB = 'Имя "{link}" уже занято.'

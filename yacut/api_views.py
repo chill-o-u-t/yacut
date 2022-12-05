@@ -12,17 +12,17 @@ from .models import URLMap
 @app.route('/api/id/', methods=['POST'])
 def add_link():
     data = request.get_json()
+    if not data:
+        raise APIError('Отсутствует тело запроса')
     check = URLMap.check_api_short(data)
+    if not data:
+        raise APIError('Отсутствует тело запроса')
     if check:
         raise APIError(check)
     short = URLMap.add_link(
         data.get('url'),
         data.get('custom_id')
     )
-    if not short:
-        raise APIError(
-            'Имя "{link}" уже занято.'.format(link=short)
-        )
     return jsonify(
         URLMap.get_link(short).to_dict()
     ), HTTPStatus.CREATED

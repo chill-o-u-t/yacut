@@ -31,18 +31,16 @@ class URLMap(db.Model):
     @staticmethod
     def check_api_short(data):
         short = data.get('custom_id')
-        if not data:
-            raise APIError(EMPTY_BODY)
-            return
         if not data.get('url'):
             return EMPTY_ORIGINAL_LINK
-        if not short:
-            return
-        if (
-            len(short) > MAX_LINK_LENGTH
-            or not re.match(REGEX_PATTERN, short)
-        ):
-            return WRONG_SHORT_LINK
+        if short:
+            if (
+                len(short) > MAX_LINK_LENGTH
+                or not re.match(REGEX_PATTERN, short)
+            ):
+                return WRONG_SHORT_LINK
+            if URLMap.query.filter_by(short=short).first():
+                return LINK_IS_IN_DB.format(link=short)
 
     @staticmethod
     def create_short_url():
@@ -74,7 +72,7 @@ class URLMap(db.Model):
         return (
             URLMap.query.filter_by(
                 short=short
-            ).first_or_404()
+            ).first()
         )
 
     def to_dict(self):
