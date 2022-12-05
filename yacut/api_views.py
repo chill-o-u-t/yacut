@@ -1,10 +1,7 @@
-import re
-
 from http import HTTPStatus
 from flask import jsonify, request
 
-from settings import REGEX_PATTERN, MAX_LINK_LENGTH
-from . import app, db
+from . import app
 from .error_handlers import APIError
 from .models import URLMap
 
