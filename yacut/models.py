@@ -43,8 +43,8 @@ class URLMap(db.Model):
             return EMPTY_ORIGINAL_LINK
         if short:
             if (
-                len(short) > MAX_LINK_LENGTH
-                or not re.match(REGEX_PATTERN, short)
+                len(short) > MAX_LINK_LENGTH or not
+                re.match(REGEX_PATTERN, short)
             ):
                 return WRONG_SHORT_LINK
             if URLMap.query.filter_by(short=short).first():
