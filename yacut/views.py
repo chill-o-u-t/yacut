@@ -31,7 +31,7 @@ def index_view():
 
 @app.route('/<string:short>')
 def redirect_view(short):
-    original_url = URLMap.get_link()
+    original_url = URLMap.get_link(short)
     if original_url is None:
         abort(HTTPStatus.NOT_FOUND)
     return redirect(original_url.original)
