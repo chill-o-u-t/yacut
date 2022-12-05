@@ -1,27 +1,52 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, URLField
-from wtforms.validators import DataRequired, Length, Optional, URL, Regexp
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    Optional,
+    URL,
+    Regexp
+)
 
-from settings import REGEX_PATTERN
+from settings import REGEX_PATTERN, MAX_LINK_LENGTH
+
+SUBMIT_FIELD = 'Создать'
+REGEX_FIELD = (
+    'Можно использовать только '
+    'латинские буквы и арабские цифры'
+)
+SHORT_LENGTH_FIELD = (
+    'Длина ссылки должна быть до '
+    '{} символов'
+)
+SHORT_DESCRIPTION = 'Ваш вариант короткой ссылки'
+ORIGINAL_DESCRIPTION = 'Длинная ссылка'
+URL_FIELD = 'Введите ссылку целиком'
+DATA_REQUIRED_FIELD = 'Обязательное поле'
 
 
 class UrlForm(FlaskForm):
     original_link = URLField(
-        'Длинная ссылка',
-        validators=[DataRequired(message='Обязательное поле'), URL(message='Введите ссылку целиком')]
+        ORIGINAL_DESCRIPTION,
+        validators=[
+            DataRequired(message=DATA_REQUIRED_FIELD),
+            URL(message=URL_FIELD),
+        ]
     )
     custom_id = StringField(
-        'Ваш вариант короткой ссылки',
+        SHORT_DESCRIPTION,
         validators=[
             Length(
-                max=16,
-                message=f'Длина ссылки должна быть до {16} символов'
+                max=MAX_LINK_LENGTH,
+                message=SHORT_LENGTH_FIELD.format(
+                    MAX_LINK_LENGTH
+                )
             ),
             Regexp(
                 REGEX_PATTERN,
-                message='Можно использовать только латинские буквы и арабские цифры'
+                message=REGEX_FIELD
             ),
             Optional()
         ]
     )
-    submit = SubmitField('Создать')
+    submit = SubmitField(SUBMIT_FIELD)
