@@ -37,9 +37,8 @@ class URLMap(db.Model):
     )
 
     @staticmethod
-    def check_api_short(data):
-        short = data.get('custom_id')
-        if not data.get('url'):
+    def check_api_short(original, short):
+        if not original:
             return EMPTY_ORIGINAL_LINK
         if short:
             if (
