@@ -59,6 +59,7 @@ class URLMap(db.Model):
             )
             if not URLMap.query.filter_by(short=short_url).first():
                 return short_url
+        return URLMap.create_short_url()
 
     @staticmethod
     def add_link(original, short):
