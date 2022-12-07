@@ -1,3 +1,9 @@
+# Yacut (Серис укорачивания ссылок)
+
+## Технологии
+- [Python](https://www.python.org/)
+- [Flask](https://flask.org/)
+
 Клонировать репозиторий и перейти в него в командной строке:
 
 ```
@@ -35,3 +41,6 @@ python3 -m pip install --upgrade pip
 ```
 pip install -r requirements.txt
 ```
+## Над проектом работали
+
+- Иван Морозов
