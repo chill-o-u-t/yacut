@@ -1,6 +1,7 @@
 from http import HTTPStatus
 from flask import jsonify, request
 
+from settings import LINK_IS_IN_DB
 from . import app
 from .error_handlers import APIError
 from .models import URLMap
@@ -21,6 +22,10 @@ def add_link():
         data.get('url'),
         data.get('custom_id')
     )
+    if not short:
+        raise APIError(
+            LINK_IS_IN_DB.format(link=data.get('custom_id'))
+        )
     return jsonify(
         URLMap.get_link(short).to_dict()
     ), HTTPStatus.CREATED
