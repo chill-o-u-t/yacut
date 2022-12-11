@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from flask import jsonify, request
+from flask import jsonify, request, url_for
 
 from settings import LINK_IS_IN_DB
 from . import app
@@ -27,7 +27,14 @@ def add_link():
             LINK_IS_IN_DB.format(link=data.get('custom_id'))
         )
     return jsonify(
-        URLMap.get_link(short).to_dict()
+        {
+            'url': URLMap.get_link(short).original,
+            'short_link': url_for(
+                'redirect_view',
+                short=short,
+                _external=True
+            )
+        }
     ), HTTPStatus.CREATED
 
 
