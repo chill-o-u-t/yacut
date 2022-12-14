@@ -8,7 +8,7 @@ from wtforms.validators import (
     Regexp
 )
 
-from settings import REGEX_PATTERN, MAX_LINK_LENGTH, MAX_URL_LENGTH
+from settings import PATTERN, MAX_LINK_LENGTH, MAX_URL_LENGTH
 
 SUBMIT_FIELD = 'Создать'
 REGEX_FIELD = (
@@ -44,7 +44,7 @@ class UrlForm(FlaskForm):
                 )
             ),
             Regexp(
-                REGEX_PATTERN,
+                PATTERN,
                 message=REGEX_FIELD
             ),
             Optional()
