@@ -37,8 +37,21 @@ class URLMap(db.Model):
     @staticmethod
     def check_api_short(original, short):
         """
-        Я не понимаю, как сделать нейтральный бросок, если тесты требуют кастомный APIError
-        Так же и для проверки с длинной строки и re, при изменении текста ошибки падают тесты
+        При попытке тут выбросить питоновский error и перехватить его в api_views,
+        чтобы оттуда вызвать APIError не срабатывает, как я понимаю ошибка отсюда тоже вызывается
+        и это происходит раньше, чем кастомная после перехвата
+        models.py
+        if not original:
+            raise ValueError(EMPTY_ORIGINAL_LINK)
+
+        api_views.pu
+        ...
+        try: URLMap.check_api_short(original, short)
+        except ValueError as error:
+            raise APIError(error)
+
+        Тесты получают ValueError и падают, что от меня требуется и как это должно выглядеть без оглядки
+        на тесты я понял, но чтобы проходили тесты не получается, возможно что-то упускаю.
         """
         if not original:
             raise APIError(EMPTY_ORIGINAL_LINK)
