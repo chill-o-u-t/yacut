@@ -17,10 +17,8 @@ def add_link():
             data.get('url'),
             data.get('custom_id')
         )
-    except ValueError as error:
-        raise APIError(error)
-    except TypeError as error:
-        raise APIError(error)
+    except Exception as error:
+        raise APIError(str(error))
     short = URLMap.add_link(
         data.get('url'),
         data.get('custom_id')
